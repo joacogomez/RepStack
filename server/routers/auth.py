@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Usuario
@@ -59,8 +60,8 @@ def register(datos: UsuarioRegistro, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=Token)
-def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
-    usuario = db.query(Usuario).filter(Usuario.email == datos.email).first()
+def login(datos: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    usuario = db.query(Usuario).filter(Usuario.email == datos.username).first()
     if not usuario or not verificar_password(datos.password, str(usuario.password_hash)):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
