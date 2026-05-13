@@ -8,7 +8,14 @@ import Select from '../components/ui/Select'
 
 export default function Home() {
   const navigate = useNavigate()
-  const hoy = new Date().toISOString().split('T')[0]
+  const getLocalDate = () => {
+    const d = new Date()
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+  const hoy = getLocalDate()
 
   const [sesion, setSesion] = useState(null)
   const [ejercicios, setEjercicios] = useState([])
@@ -23,13 +30,15 @@ export default function Home() {
   const [usuario, setUsuario] = useState(null)
 
   useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      navigate('/')
+      return
+    }
+    const payload = JSON.parse(atob(token.split('.')[1]))
+    setUsuario(payload)
     cargarSesion()
     cargarTipos()
-    const token = localStorage.getItem('token')
-    if (token) {
-      const payload = JSON.parse(atob(token.split('.')[1]))
-      setUsuario(payload)
-    }
   }, [])
 
   const cargarTipos = async () => {
@@ -113,7 +122,7 @@ export default function Home() {
       </div>
 
       {/* Layout: Fecha + Card lado a lado en escritorio */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, marginBottom: 32 }}>
         
         {/* Izquierda: Fecha */}
         <div style={{ flex: '1 1 300px', minWidth: '40%', display: 'flex', alignItems: 'center' }}>

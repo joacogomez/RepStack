@@ -47,8 +47,14 @@ export default function Detalle() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {sesion.ejercicios.map((e) => (
           <div key={e.id} style={neu.card_sm}>
-            <p style={{ fontWeight: 700, color: colors.text, marginBottom: 4 }}>{e.nombre}</p>
+            <p style={{ fontWeight: 700, color: colors.text, marginBottom: 4 }}>
+              {e.tipo_ejercicio?.nombre || 'Ejercicio'}
+            </p>
             <p style={{ fontSize: 13, color: colors.muted }}>
+              {e.tipo_agarre && `${e.tipo_agarre}`}
+              {e.tipo_agarre && e.posicion_manos && ' / '}
+              {e.posicion_manos && `${e.posicion_manos}`}
+              {e.tipo_agarre || e.posicion_manos ? ' — ' : ''}
               {e.series && `${e.series} series`}
               {e.repeticiones && ` × ${e.repeticiones} reps`}
               {e.peso_kg && ` — ${e.peso_kg} kg`}

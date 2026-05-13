@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from database import get_db
 from models import Usuario, Sesion, Ejercicio, TipoEjercicio
 from schemas import SesionCrear, SesionRespuesta, EjercicioCrear, EjercicioRespuesta
@@ -55,7 +55,9 @@ def crear_sesion(datos: SesionCrear, db: Session = Depends(get_db), usuario: Usu
 
 @router.get("/{fecha}", response_model=SesionRespuesta)
 def get_sesion_por_fecha(fecha: str, db: Session = Depends(get_db), usuario: Usuario = Depends(get_usuario_actual)):
-    sesion = db.query(Sesion).filter(
+    sesion = db.query(Sesion).options(
+        joinedload(Sesion.ejercicios).joinedload(Ejercicio.tipo_ejercicio)
+    ).filter(
         Sesion.usuario_id == usuario.id,
         Sesion.fecha == fecha
     ).first()
