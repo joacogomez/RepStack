@@ -1,0 +1,80 @@
+export const colors = {
+    bg: '#e8e8e8',
+    text: '#2a2a2a',
+    muted: '#aaa',
+    subtle: '#999',
+  }
+  
+  export const neu = {
+    card: {
+      background: colors.bg,
+      borderRadius: 32,
+      padding: '40px 32px',
+      boxShadow: '12px 12px 24px rgba(0,0,0,0.12), -12px -12px 24px rgba(255,255,255,0.9)',
+    },
+    input: {
+      width: '100%',
+      background: colors.bg,
+      border: 'none',
+      borderRadius: 12,
+      padding: '14px 16px',
+      fontSize: 15,
+      color: '#333',
+      outline: 'none',
+      boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.12), inset -4px -4px 8px rgba(255,255,255,0.9)',
+      boxSizing: 'border-box',
+    },
+    button: {
+      width: '100%',
+      background: colors.bg,
+      border: 'none',
+      borderRadius: 16,
+      padding: '16px',
+      fontSize: 13,
+      fontWeight: 700,
+      letterSpacing: '0.15em',
+      textTransform: 'uppercase',
+      color: '#333',
+      cursor: 'pointer',
+      boxShadow: '6px 6px 12px rgba(0,0,0,0.15), -6px -6px 12px rgba(255,255,255,0.9)',
+      transition: 'all 0.1s ease',
+    },
+    buttonPressed: {
+      boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.12), inset -4px -4px 8px rgba(255,255,255,0.9)',
+      transform: 'scale(0.98)',
+    },
+    label: {
+      fontSize: 11,
+      letterSpacing: '0.15em',
+      textTransform: 'uppercase',
+      color: colors.subtle,
+      marginBottom: 8,
+      display: 'block',
+    },
+    card_sm: {
+      background: colors.bg,
+      borderRadius: 20,
+      padding: '16px 20px',
+      boxShadow: '6px 6px 12px rgba(0,0,0,0.1), -6px -6px 12px rgba(255,255,255,0.9)',
+    },
+    iconButton: {
+      background: colors.bg,
+      border: 'none',
+      borderRadius: 12,
+      width: 42,
+      height: 42,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      boxShadow: '4px 4px 8px rgba(0,0,0,0.12), -4px -4px 8px rgba(255,255,255,0.9)',
+      color: '#555',
+      transition: 'all 0.1s ease',
+    },
+  }
+  
+  export const pageWrapper = {
+    minHeight: '100vh',
+    background: 'rgba(232, 232, 232, 0.85)',
+    padding: '32px 24px',
+  }

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getSesiones } from '../api/client'
+import { neu, colors, pageWrapper } from '../styles/neu'
+import { ArrowLeft, Dumbbell } from 'lucide-react'
 
-function Historial() {
+export default function Historial() {
   const navigate = useNavigate()
   const [sesiones, setSesiones] = useState([])
 
@@ -11,49 +13,49 @@ function Historial() {
   }, [])
 
   return (
-    <div style={{ maxWidth: 480, margin: '0 auto', padding: '24px 16px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
-        <button onClick={() => navigate('/home')} style={btnSecundario}>← Volver</button>
-        <h1 style={{ fontSize: 22 }}>Historial</h1>
+    <div style={pageWrapper}>
+
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32 }}>
+        <button style={neu.iconButton} onClick={() => navigate('/home')}>
+          <ArrowLeft size={18} />
+        </button>
+        <div>
+          <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: colors.muted, marginBottom: 2 }}>
+            RepStack
+          </p>
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: colors.text, letterSpacing: '-0.02em' }}>
+            Historial
+          </h1>
+        </div>
       </div>
 
+      {/* Lista */}
       {sesiones.length === 0 && (
-        <p style={{ color: '#666', textAlign: 'center' }}>No hay sesiones anteriores</p>
+        <div style={{ ...neu.card_sm, textAlign: 'center', padding: 32 }}>
+          <Dumbbell size={28} color={colors.muted} style={{ margin: '0 auto 12px' }} />
+          <p style={{ color: colors.muted, fontSize: 14 }}>No hay sesiones anteriores</p>
+        </div>
       )}
 
-      {sesiones.map((s) => (
-        <div key={s.id} style={cardStyle} onClick={() => navigate(`/historial/${s.fecha}`)}>
-          <div>
-            <p style={{ fontWeight: 'bold', marginBottom: 4 }}>{s.fecha}</p>
-            <p style={{ color: '#666', fontSize: 14 }}>
-              {s.ejercicios.length} ejercicio{s.ejercicios.length !== 1 ? 's' : ''}
-            </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {sesiones.map((s) => (
+          <div
+            key={s.id}
+            style={{ ...neu.card_sm, display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+            onClick={() => navigate(`/historial/${s.fecha}`)}
+          >
+            <div>
+              <p style={{ fontWeight: 700, color: colors.text, marginBottom: 4 }}>{s.fecha}</p>
+              <p style={{ fontSize: 13, color: colors.muted }}>
+                {s.ejercicios.length} ejercicio{s.ejercicios.length !== 1 ? 's' : ''}
+              </p>
+            </div>
+            <p style={{ color: colors.muted, fontSize: 18 }}>→</p>
           </div>
-          <span style={{ color: '#999' }}>→</span>
-        </div>
-      ))}
+        ))}
+      </div>
+
     </div>
   )
 }
-
-const btnSecundario = {
-  padding: '8px 16px',
-  borderRadius: 8,
-  border: '1px solid #ddd',
-  background: 'transparent',
-  cursor: 'pointer',
-  fontSize: 14,
-}
-
-const cardStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '16px',
-  borderRadius: 8,
-  border: '1px solid #ddd',
-  marginBottom: 12,
-  cursor: 'pointer',
-}
-
-export default Historial

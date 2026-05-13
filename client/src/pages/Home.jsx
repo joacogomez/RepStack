@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { crearSesion, getSesionPorFecha, agregarEjercicio, eliminarEjercicio } from '../api/client'
+import { neu, colors, pageWrapper } from '../styles/neu'
+import { Dumbbell, Trash2, History, LogOut, User } from 'lucide-react'
+import ScrollWheel from '../components/ui/ScrollWheel'
 
-function Home() {
+export default function Home() {
   const navigate = useNavigate()
   const hoy = new Date().toISOString().split('T')[0]
 
@@ -12,10 +15,9 @@ function Home() {
   const [series, setSeries] = useState('')
   const [repeticiones, setRepeticiones] = useState('')
   const [peso, setPeso] = useState('')
+  const [presionado, setPresionado] = useState(false)
 
-  useEffect(() => {
-    cargarSesion()
-  }, [])
+  useEffect(() => { cargarSesion() }, [])
 
   const cargarSesion = async () => {
     try {
@@ -55,95 +57,114 @@ function Home() {
     navigate('/')
   }
 
+  const fechaFormateada = new Date().toLocaleDateString('es-AR', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+  })
+
   return (
-    <div style={{ maxWidth: 480, margin: '0 auto', padding: '24px 16px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-        <h1 style={{ fontSize: 22 }}>{hoy}</h1>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <button onClick={() => navigate('/historial')} style={btnSecundario}>Historial</button>
-          <button onClick={handleLogout} style={btnSecundario}>Salir</button>
+    <div style={pageWrapper}>
+
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+        <div>
+          <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: colors.muted, marginBottom: 4 }}>
+            Hoy
+          </p>
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: colors.text, letterSpacing: '-0.02em', textTransform: 'capitalize' }}>
+            {fechaFormateada}
+          </h1>
+        </div>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button style={neu.iconButton} onClick={() => navigate('/historial')}>
+            <History size={18} />
+          </button>
+          <button style={neu.iconButton} onClick={handleLogout}>
+            <LogOut size={18} />
+          </button>
         </div>
       </div>
 
-      <div style={{ marginBottom: 24 }}>
-        <input placeholder="Ejercicio" value={nombre} onChange={(e) => setNombre(e.target.value)} style={inputStyle} />
-        <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-          <input placeholder="Series" value={series} onChange={(e) => setSeries(e.target.value)} style={{ ...inputStyle, marginBottom: 0 }} type="number" />
-          <input placeholder="Reps" value={repeticiones} onChange={(e) => setRepeticiones(e.target.value)} style={{ ...inputStyle, marginBottom: 0 }} type="number" />
-          <input placeholder="Kg" value={peso} onChange={(e) => setPeso(e.target.value)} style={{ ...inputStyle, marginBottom: 0 }} type="number" />
+      {/* Card agregar ejercicio */}
+      <div style={{ ...neu.card, marginBottom: 24 }}>
+        <p style={{ ...neu.label, marginBottom: 16 }}>Agregar ejercicio</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <input
+            placeholder="Nombre del ejercicio"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            style={neu.input}
+          />
+          {/* reemplazá el grid de inputs numéricos por esto */}
+          <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 8 }}>
+            <ScrollWheel
+              label="Series"
+              value={series ? parseInt(series) : 0}
+              onChange={(v) => setSeries(v)}
+              min={0}
+              max={20}
+            />
+            <ScrollWheel
+              label="Reps"
+              value={repeticiones ? parseInt(repeticiones) : 0}
+              onChange={(v) => setRepeticiones(v)}
+              min={0}
+              max={50}
+            />
+            <ScrollWheel
+              label="Kg"
+              value={peso ? parseInt(peso) : 0}
+              onChange={(v) => setPeso(v)}
+              min={0}
+              max={300}
+            />
+          </div>
+          <button
+            onClick={handleAgregar}
+            style={{
+              ...neu.button,
+              ...(presionado ? neu.buttonPressed : {}),
+            }}
+            onMouseDown={() => setPresionado(true)}
+            onMouseUp={() => setPresionado(false)}
+            onMouseLeave={() => setPresionado(false)}
+            onTouchStart={() => setPresionado(true)}
+            onTouchEnd={() => setPresionado(false)}
+          >
+            Agregar
+          </button>
         </div>
-        <button onClick={handleAgregar} style={btnPrimario}>Agregar ejercicio</button>
       </div>
 
-      <div>
-        {ejercicios.length === 0 && (
-          <p style={{ color: '#666', textAlign: 'center' }}>No hay ejercicios todavía</p>
-        )}
+      {/* Lista ejercicios */}
+      <p style={neu.label}>Ejercicios de hoy ({ejercicios.length})</p>
+
+      {ejercicios.length === 0 && (
+        <div style={{ ...neu.card_sm, textAlign: 'center', padding: 32 }}>
+          <Dumbbell size={28} color={colors.muted} style={{ margin: '0 auto 12px' }} />
+          <p style={{ color: colors.muted, fontSize: 14 }}>No hay ejercicios todavía</p>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {ejercicios.map((e) => (
-          <div key={e.id} style={cardStyle}>
+          <div key={e.id} style={{ ...neu.card_sm, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <p style={{ fontWeight: 'bold', marginBottom: 4 }}>{e.nombre}</p>
-              <p style={{ color: '#666', fontSize: 14 }}>
+              <p style={{ fontWeight: 700, color: colors.text, marginBottom: 4 }}>{e.nombre}</p>
+              <p style={{ fontSize: 13, color: colors.muted }}>
                 {e.series && `${e.series} series`}
                 {e.repeticiones && ` × ${e.repeticiones} reps`}
                 {e.peso_kg && ` — ${e.peso_kg} kg`}
               </p>
             </div>
-            <button onClick={() => handleEliminar(e.id)} style={btnEliminar}>✕</button>
+            <button
+              onClick={() => handleEliminar(e.id)}
+              style={{ ...neu.iconButton, width: 36, height: 36 }}
+            >
+              <Trash2 size={15} />
+            </button>
           </div>
         ))}
       </div>
     </div>
   )
 }
-
-const inputStyle = {
-  width: '100%',
-  padding: '12px 16px',
-  marginBottom: 12,
-  borderRadius: 8,
-  border: '1px solid #ddd',
-  fontSize: 16,
-  boxSizing: 'border-box',
-}
-
-const btnPrimario = {
-  width: '100%',
-  padding: '12px 16px',
-  borderRadius: 8,
-  border: 'none',
-  background: '#000',
-  color: '#fff',
-  fontSize: 16,
-  fontWeight: 'bold',
-  cursor: 'pointer',
-}
-
-const btnSecundario = {
-  padding: '8px 16px',
-  borderRadius: 8,
-  border: '1px solid #ddd',
-  background: 'transparent',
-  cursor: 'pointer',
-  fontSize: 14,
-}
-
-const btnEliminar = {
-  background: 'none',
-  border: 'none',
-  cursor: 'pointer',
-  fontSize: 18,
-  color: '#999',
-}
-
-const cardStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '16px',
-  borderRadius: 8,
-  border: '1px solid #ddd',
-  marginBottom: 12,
-}
-
-export default Home
