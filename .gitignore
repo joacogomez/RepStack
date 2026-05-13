@@ -1,6 +1,7 @@
 # Python
 server/venv/
 server/routers/__pycache__/
+__pycache__/
 server/.env
 
 # Node
