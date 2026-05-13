@@ -68,5 +68,5 @@ def login(datos: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(ge
             detail="Email o contraseña incorrectos"
         )
 
-    token = crear_token({"sub": str(usuario.id)})
+    token = crear_token({"sub": str(usuario.id), "is_admin": usuario.is_admin})
     return {"access_token": token, "token_type": "bearer"}

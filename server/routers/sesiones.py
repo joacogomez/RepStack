@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from database import get_db
-from models import Usuario, Sesion, Ejercicio
+from models import Usuario, Sesion, Ejercicio, TipoEjercicio
 from schemas import SesionCrear, SesionRespuesta, EjercicioCrear, EjercicioRespuesta
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer

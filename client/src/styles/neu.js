@@ -3,6 +3,7 @@ export const colors = {
     text: '#2a2a2a',
     muted: '#aaa',
     subtle: '#999',
+    danger: '#d32f2f',
   }
   
   export const neu = {
@@ -42,6 +43,21 @@ export const colors = {
     buttonPressed: {
       boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.12), inset -4px -4px 8px rgba(255,255,255,0.9)',
       transform: 'scale(0.98)',
+    },
+    buttonSecondary: {
+      width: '100%',
+      background: '#ddd',
+      border: 'none',
+      borderRadius: 16,
+      padding: '16px',
+      fontSize: 13,
+      fontWeight: 700,
+      letterSpacing: '0.15em',
+      textTransform: 'uppercase',
+      color: '#666',
+      cursor: 'pointer',
+      boxShadow: '6px 6px 12px rgba(0,0,0,0.1), -6px -6px 12px rgba(255,255,255,0.8)',
+      transition: 'all 0.1s ease',
     },
     label: {
       fontSize: 11,
