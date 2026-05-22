@@ -22,3 +22,8 @@ export const crearSesion = (datos) => api.post('/sesiones/', datos)
 export const getSesionPorFecha = (fecha) => api.get(`/sesiones/${fecha}`)
 export const agregarEjercicio = (sesionId, datos) => api.post(`/sesiones/${sesionId}/ejercicios`, datos)
 export const eliminarEjercicio = (ejercicioId) => api.delete(`/sesiones/ejercicios/${ejercicioId}`)
+
+export const getTiposEjercicio = () => api.get('/tipos-ejercicio/')
+export const crearTipoEjercicio = (datos) => api.post('/tipos-ejercicio/', datos)
+export const actualizarTipoEjercicio = (id, datos) => api.put(`/tipos-ejercicio/${id}`, datos)
+export const eliminarTipoEjercicio = (id) => api.delete(`/tipos-ejercicio/${id}`)

@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login, register } from '../api/client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Dumbbell, Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
+import { neu, colors, pageWrapper } from '../styles/neu'
+
 
 export default function Login() {
   const [modo, setModo] = useState('login')
@@ -13,6 +12,7 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [presionado, setPresionado] = useState(false)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -33,109 +33,122 @@ export default function Login() {
     }
   }
 
+
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-background">
-      {/* Círculos decorativos */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full opacity-60"
-          style={{ background: "radial-gradient(circle, oklch(0.92 0.04 75) 0%, oklch(0.96 0.02 75 / 0) 70%)" }} />
-        <div className="absolute -bottom-20 -left-20 h-80 w-80 rounded-full opacity-50"
-          style={{ background: "radial-gradient(circle, oklch(0.65 0.08 55) 0%, oklch(0.75 0.06 55 / 0) 70%)" }} />
-        <div className="absolute left-1/4 top-1/3 h-48 w-48 rounded-full opacity-40"
-          style={{ background: "radial-gradient(circle, oklch(0.88 0.05 75) 0%, oklch(0.92 0.03 75 / 0) 70%)" }} />
-        <div className="absolute -bottom-40 -right-10 h-[500px] w-[500px] rounded-full opacity-30"
-          style={{ background: "radial-gradient(circle, oklch(0.55 0.07 55) 0%, oklch(0.65 0.05 55 / 0) 70%)" }} />
-        <div className="absolute left-10 top-20 h-32 w-32 rounded-full opacity-50"
-          style={{ background: "radial-gradient(circle, oklch(0.90 0.04 75) 0%, oklch(0.95 0.02 75 / 0) 70%)" }} />
+    <div className="min-h-screen flex flex-col justify-center items-center px-6 py-12"
+        style={{ background: '#e8e8e8' }}>
+
+      {/* Título fuera de la card */}
+      <div className="w-full max-w-sm mb-10">
+        <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#aaa', marginBottom: 6 }}>
+          Tu entrenamiento
+        </p>
+        <h1 style={{
+          fontSize: 64,
+          fontWeight: 900,
+          letterSpacing: '-0.04em',
+          lineHeight: 1,
+          color: '#2a2a2a',
+        }}>
+          Rep<br />Stack
+        </h1>
       </div>
 
-      {/* Contenido */}
-      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4">
-        <div className="w-full max-w-sm">
+      {/* Card neumórfica */}
+      <div className="w-full max-w-sm" style={neu.card}>
+        <p style={{ fontSize: 18, fontWeight: 700, color: '#2a2a2a', marginBottom: 28 }}>
+          {modo === 'login' ? 'Iniciá sesión' : 'Creá tu cuenta'}
+        </p>
 
-          {/* Logo */}
-          <div className="mb-12 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary">
-              <Dumbbell className="h-8 w-8 text-primary-foreground" />
-            </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-              RepStack
-            </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {modo === 'login' ? 'Iniciá sesión' : 'Creá tu cuenta'}
-            </p>
-          </div>
-
-          {/* Formulario */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {modo === 'register' && (
-              <div className="space-y-2">
-                <Label htmlFor="nombre">Nombre</Label>
-                <Input
-                  id="nombre"
-                  placeholder="Tu nombre"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                  className="h-12"
-                />
-              </div>
-            )}
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="nombre@ejemplo.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-12"
-                required
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          {modo === 'register' && (
+            <div>
+              <label style={neu.label}>Nombre</label>
+              <input
+                placeholder="Tu nombre"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                style={neu.input}
               />
             </div>
+          )}
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Contraseña</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="Tu contraseña"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="h-12 pr-10"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
-              </div>
+          <div>
+            <label style={neu.label}>Email</label>
+            <input
+              type="email"
+              placeholder="nombre@ejemplo.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={neu.input}
+              required
+            />
+          </div>
+
+          <div>
+            <label style={neu.label}>Contraseña</label>
+            <div style={{ position: 'relative' }}>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Tu contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{ ...neu.input, paddingRight: 44 }}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  right: 14,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: '#aaa',
+                  padding: 0,
+                  display: 'flex',
+                }}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
+          </div>
 
-            {error && <p className="text-sm text-red-500">{error}</p>}
+          {error && <p style={{ fontSize: 13, color: '#e74c3c' }}>{error}</p>}
 
-            <Button type="submit" className="h-12 w-full">
-              {modo === 'login' ? 'Ingresar' : 'Registrarse'}
-            </Button>
-          </form>
+          <button
+  type="submit"
+  style={{
+    ...neu.button,
+    boxShadow: presionado
+      ? 'inset 4px 4px 8px rgba(0,0,0,0.12), inset -4px -4px 8px rgba(255,255,255,0.9)'
+      : '6px 6px 12px rgba(0,0,0,0.15), -6px -6px 12px rgba(255,255,255,0.9)',
+    transform: presionado ? 'scale(0.98)' : 'scale(1)',
+    transition: 'all 0.1s ease',
+  }}
+  onMouseDown={() => setPresionado(true)}
+  onMouseUp={() => setPresionado(false)}
+  onMouseLeave={() => setPresionado(false)}
+  onTouchStart={() => setPresionado(true)}
+  onTouchEnd={() => setPresionado(false)}
+>
+  {modo === 'login' ? 'Ingresar' : 'Registrarse'}
+</button>
+        </form>
 
-          {/* Link cambiar modo */}
-          <p className="mt-8 text-center text-sm text-muted-foreground">
-            {modo === 'login' ? '¿No tenés cuenta?' : '¿Ya tenés cuenta?'}{' '}
-            <button
-              type="button"
-              onClick={() => setModo(modo === 'login' ? 'register' : 'login')}
-              className="font-medium text-foreground underline-offset-4 hover:underline"
-            >
-              {modo === 'login' ? 'Registrate' : 'Iniciá sesión'}
-            </button>
-          </p>
-
-        </div>
+        <p style={{ textAlign: 'center', marginTop: 24, fontSize: 13, color: '#aaa' }}>
+          {modo === 'login' ? '¿No tenés cuenta?' : '¿Ya tenés cuenta?'}{' '}
+          <button
+            type="button"
+            onClick={() => setModo(modo === 'login' ? 'register' : 'login')}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontWeight: 700, color: '#555', fontSize: 13 }}
+          >
+            {modo === 'login' ? 'Registrate' : 'Iniciá sesión'}
+          </button>
+        </p>
       </div>
     </div>
   )
